@@ -1,6 +1,6 @@
 'use strict';
-
-process.env.UV_THREADPOOL_SIZE = String(64);
+const OS = require('os');
+process.env.UV_THREADPOOL_SIZE = OS.cpus().length;
 
 import sharp from 'sharp';
 import async from 'async';
