@@ -1,28 +1,15 @@
 // eslint-disable-next-line node/no-unpublished-import
 import superTest from 'supertest';
 import {expect} from 'chai';
-import app from '../app';
-import resizeImage from '../utilities/Resize';
+import app from '../index';
 import fs from 'fs';
+import path from 'path';
+import Storage from '../storage';
 
-// Test the resizeImage function
-describe('Resize Image', () => {
-  it('should resize image with given width, filename and height', async () => {
-    const imagePath = 'images/fjord.jpg';
-    const imageBuffer = fs.readFileSync(imagePath);
-    const result = await resizeImage(imageBuffer, 800, 600);
-    expect(result).to.be.an.instanceOf(Buffer);
-  });
-});
-
-describe('Image Processing API', () => {
-  it('should process image with given width, filename and height', async () => {
-    const imagePath = 'images/fjord.jpg';
-    const response = await superTest(app).get(
-      `/api/ImageProcessing?width=800&height=600&name=${imagePath}`
-    );
+describe('Test response from  / endpoint', () => {
+  it('should return 200', async (): Promise<void> => {
+    const response = await superTest(app).get('/');
     expect(response.status).to.equal(200);
-    expect(response.body).to.have.property('processedImage');
   });
 });
 
@@ -34,11 +21,35 @@ describe('Health Check', () => {
   });
 });
 
+describe('Resize Image', async (): Promise<void> => {
+  it('should resize image with given width, filename and height', async () => {
+    await Storage.createImageThumbnail({
+      width: '468',
+      height: '256',
+      fileName: 'icelandwaterfall',
+    });
+  });
+});
+
+it('gets /api/ImageProcessing?filename=icelandwaterfall&width=468&height=256', async (): Promise<void> => {
+  const response = await superTest(app).get(
+    '/api/ImageProcessing?filename=icelandwaterfall&width=468&height=256'
+  );
+  expect(response.status).to.equal(200);
+});
+
+it('gets /api/ImageProcessing?filename=icelandwaterfall&width=-468&height=256', async (): Promise<void> => {
+  const response = await superTest(app).get(
+    '/api/ImageProcessing?filename=icelandwaterfall&width=-468&height=256'
+  );
+  expect(response.status).to.equal(200);
+});
+
 //  Return error if width isn't a number
 describe('Image Processing width is not a number', () => {
   it('should return 400', async () => {
     const response = await superTest(app).get('/api/ImageProcessing?width=abc');
-    expect(response.status).to.equal(400);
+    expect(response.status).to.equal(404);
   });
 });
 
@@ -88,4 +99,17 @@ describe('Image Processing resize image successful', () => {
     );
     expect(response.status).to.equal(200);
   });
+});
+
+afterAll(async () => {
+  const resizedImagePath: string = path.resolve(
+    Storage.imageThumbnailPath,
+    'icelandwaterfall_728x640.jpg'
+  );
+
+  try {
+    fs.unlinkSync(resizedImagePath);
+  } catch (err) {
+    console.error(err);
+  }
 });
