@@ -1,5 +1,4 @@
-// import CheckFile and Resize modules
 import CheckFile from './CheckFile';
-import Resize from './Resize';
+import resizeImage, {resizeImageParallel} from './Resize';
 
-export {CheckFile, Resize};
+export {CheckFile, resizeImage, resizeImageParallel};
