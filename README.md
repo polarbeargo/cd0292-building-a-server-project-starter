@@ -10,6 +10,42 @@ Usually, you would get some starter code to build from, but with this project, i
 
 You can use your own images or use the ones provided in this repo: [images](images)
 
+### Requirements
+
+- Node v16.16.0
+
+### Installation
+
+```bash
+npm run init
+```
+
+### Liniting
+
+```bash
+npm run int
+npm run lint
+```
+
+### Formatting
+
+```bash
+npm run prettier
+```
+
+### Start the server & client
+
+```bash
+npm install
+npm start
+```
+
+### Run tests
+
+```bash
+npm run test
+```
+
 ## Instructions
 
 Feel free to attempt to create this project based on the overview and rubric specifications. If you get stuck or prefer structured guidance -- here is a walkthrough to get you up and running!
