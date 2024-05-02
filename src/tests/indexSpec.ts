@@ -21,8 +21,8 @@ describe('Health Check', () => {
   });
 });
 
-describe('Resize Image', async (): Promise<void> => {
-  it('should resize image with given width, filename and height', async () => {
+describe('Resize Image', (): void => {
+  it('should resize image with given width, filename and height', async (): Promise<void> => {
     await Storage.createImageThumbnail({
       width: '468',
       height: '256',
