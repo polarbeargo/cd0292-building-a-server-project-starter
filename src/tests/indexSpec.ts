@@ -20,14 +20,14 @@ describe('Health Check', () => {
     expect(response.body).to.have.property('status');
   });
 });
-
 describe('Resize Image', (): void => {
   it('should resize image with given width, filename and height', async (): Promise<void> => {
-    await Storage.createImageThumbnail({
+    const err: null | string = await Storage.createImageThumbnail({
       width: '468',
       height: '256',
       fileName: 'icelandwaterfall',
     });
+    expect(err).to.be.null;
   });
 });
 
