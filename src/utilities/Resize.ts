@@ -10,8 +10,8 @@ import {exec, execSync} from 'child_process';
 const width = 720;
 const height = 480;
 const fixtures = {
-  inputJpg: 'images/fjord.jpg',
-  outputJpg: 'fixtures/720x480.jpg',
+  inputJpg: '../../images/fjord.jpg',
+  outputJpg: '../../images/thumbnails/fjord_720x480.jpg',
 };
 
 // Spawn one thread per physical CPU core
@@ -60,7 +60,11 @@ const resizeImageParallel = async.mapSeries(
         sharp(fixtures.inputJpg)
           .resize(width, height)
           .toFile(fixtures.outputJpg, err => {
-            callback(err, new Date().getTime() - start);
+            if (err) {
+              callback(err); // Passing error to callback if any
+            } else {
+              callback(null, new Date().getTime() - start); // No error, pass null as first arg, and result as second arg
+            }
           });
       },
       (err, ids) => {
