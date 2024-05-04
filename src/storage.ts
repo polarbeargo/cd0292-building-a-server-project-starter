@@ -58,7 +58,7 @@ export default class Storage {
       return 'params is invalid';
     }
 
-    if (!(await CheckFile(params.fileName))) {
+    if (!(await CheckFile(params))) {
       const availableFilenames: string = (await Storage.getImages()).join(', ');
       return `Please pass a valid filename. Validated filenames are: ${availableFilenames}.`;
     }
@@ -91,7 +91,7 @@ export default class Storage {
         : path.resolve(Storage.imageAbsPath, `${params.fileName}.jpg`);
 
     try {
-      await checkFile(imagePath);
+      await checkFile(params);
       return imagePath;
     } catch (err) {
       return null;
@@ -113,13 +113,8 @@ export default class Storage {
       return false;
     }
 
-    const thumbnailPath = path.resolve(
-      Storage.imageThumbnailPath,
-      `${params.fileName}_${params.width}x${params.height}.jpg`
-    );
-
     try {
-      await checkFile(thumbnailPath);
+      await checkFile(params);
       return true;
     } catch (err) {
       return false;

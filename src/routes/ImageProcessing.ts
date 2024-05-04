@@ -20,7 +20,7 @@ ImageProcessing.get(
 
     let error: null | string = '';
 
-    if (!(await checkFile(request.query.toString()))) {
+    if (!(await checkFile(request.query))) {
       error = await Storage.createImageThumbnail(request.query);
     }
 
