@@ -30,7 +30,7 @@ npm run lint
 ### Formatting
 
 ```bash
-npm run prettier
+npx prettier --write .
 ```
 
 ### Start the server & client
