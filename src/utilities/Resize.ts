@@ -6,6 +6,7 @@ import sharp from 'sharp';
 import async from 'async';
 import assert from 'assert';
 import {exec, execSync} from 'child_process';
+import path from 'path';
 
 const width = 720;
 const height = 480;
@@ -49,44 +50,44 @@ const resizeImage = async (params: ResizeParams): Promise<null | string> => {
   }
 };
 
-// Creat parallelism resizeImage function
 const resizeImageParallel = async.mapSeries(
   [1, 1, 2, 4, 8, 16, 32, 64],
-  (parallelism, next) => {
+  async (parallelism, next) => {
     const start = new Date().getTime();
-    async.times(
-      parallelism,
-      (id, callback) => {
+    const promises = Array.from({length: parallelism}, async (_, id) => {
+      return new Promise((resolve, reject) => {
         sharp(fixtures.inputJpg)
           .resize(width, height)
           .toFile(fixtures.outputJpg, err => {
             if (err) {
-              callback(err); // Passing error to callback if any
+              reject(err);
             } else {
-              callback(null, new Date().getTime() - start); // No error, pass null as first arg, and result as second arg
+              resolve(new Date().getTime() - start);
             }
           });
-      },
-      (err, ids) => {
-        assert(!err);
-        assert(ids && ids.length === parallelism);
-        ids && ids.sort();
-        const mean =
-          (ids as number[]).reduce((a: number, b: number) => a + b) /
-          ids.length;
-        console.log(
-          parallelism +
-            ' parallel calls: fastest=' +
-            ids[0] +
-            'ms slowest=' +
-            ids[ids.length - 1] +
-            'ms mean=' +
-            mean +
-            'ms'
-        );
-        next();
-      }
-    );
+      });
+    });
+
+    try {
+      const ids = await Promise.all(promises);
+      assert(ids && ids.length === parallelism);
+      ids && ids.sort();
+      const mean =
+        (ids as number[]).reduce((a: number, b: number) => a + b) / ids.length;
+      console.log(
+        parallelism +
+          ' parallel calls: fastest=' +
+          ids[0] +
+          'ms slowest=' +
+          ids[ids.length - 1] +
+          'ms mean=' +
+          mean +
+          'ms'
+      );
+      next();
+    } catch (err: any) {
+      next(err);
+    }
   },
   () => {
     clearInterval(timer);
