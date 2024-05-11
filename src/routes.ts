@@ -5,7 +5,7 @@ import Storage from './storage';
 
 const router = express.Router();
 
-router.get('/api/ImageProcessing', ImageProcessing);
-router.get('/api/ImageThumbnailPath', Storage.readThumbnailAbsPath);
+router.use('/api/ImageProcessing', ImageProcessing);
+router.use('/api/ImageThumbnailPath', Storage.readThumbnailAbsPath);
 
 export default router;

@@ -4,6 +4,7 @@ import ErrorHandle from './middleware';
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+import router from './routes';
 
 const port = 3002;
 
@@ -23,6 +24,8 @@ app.use('/', routes);
 app.get('/health', (req, res) => {
   res.status(200).json({status: 'OK'});
 });
+
+app.use(router);
 
 app.listen(port, async (): Promise<void> => {
   await Storage.createThumbnailPath();
