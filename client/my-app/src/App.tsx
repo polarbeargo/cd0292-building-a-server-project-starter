@@ -2,7 +2,9 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {useState, useEffect} from 'react';
-import Button from '@material-ui/core/Button';
+import {Button, Menu, MenuItem} from '@material-ui/core';
+import {PhotoProvider, PhotoView} from 'react-photo-view';
+import 'react-photo-view/dist/react-photo-view.css';
 
 function App() {
   const [thumbnails, setThumbnails] = useState([]);
@@ -12,7 +14,7 @@ function App() {
     fileName: 0,
   });
 
-  const [item, setItem] = useState('ImageThumbnailPath');
+  const [itemActivity, setItemActivity] = useState('ImageThumbnailPath');
 
   const fetchThumb = async () => {
     const url = 'http://localhost:3002/api/ImageThumbnailPath';
@@ -36,7 +38,7 @@ function App() {
     return await response.json();
   };
 
-  const resizeImage = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const resizeImage = (e: React.MouseEvent<HTMLLIElement>) => {
     e.preventDefault();
     resizeImageAPI().then(response => {
       console.log(response);
@@ -66,15 +68,24 @@ function App() {
         >
           Learn React
         </a>
-        <Button variant="contained" color="primary" onClick={resizeImage}>
-          Resize Image
-        </Button>
-        <Button variant="contained" color="secondary" onClick={thumbnailsShow}>
-          Show Thumbnails
-        </Button>
+        <Menu open>
+          <MenuItem
+            onClick={(e: React.MouseEvent<HTMLLIElement>) => resizeImage(e)}
+          >
+            Resize Image
+          </MenuItem>
+          <MenuItem onClick={thumbnailsShow}>Show Thumbnails</MenuItem>
+        </Menu>
         {thumbnails.map((thumbnail: string, index: number) => (
           <img key={index} src={thumbnail} alt={`Thumbnail ${index}`} />
         ))}
+        <PhotoProvider>
+          {thumbnails.map((thumbnail: string, index: number) => (
+            <PhotoView key={index} src={thumbnail}>
+              <img src={thumbnail} alt={`Thumbnail ${index}`} />
+            </PhotoView>
+          ))}
+        </PhotoProvider>
       </header>
     </div>
   );
