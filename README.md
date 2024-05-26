@@ -33,11 +33,19 @@ npm run lint
 npx prettier --write .
 ```
 
-### Start the server & client
+### Start the server
 
 ```bash
 npm install
 npm start
+```
+
+### Start the client
+
+```bash
+cd client/my-app
+npm install
+npm run start
 ```
 
 ### Run tests
