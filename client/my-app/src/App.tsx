@@ -9,9 +9,9 @@ import 'react-photo-view/dist/react-photo-view.css';
 function App() {
   const [thumbnails, setThumbnails] = useState([]);
   const [state, formAction] = useState({
-    width: '',
+    width: 0,
     height: 0,
-    fileName: 0,
+    fileName: '',
   });
 
   const [itemActivity, setItemActivity] = useState('ImageThumbnailPath');
@@ -31,18 +31,11 @@ function App() {
     const url = `http://localhost:3002/api/ImageProcessing?filename=${state.fileName}&width=${state.width}&height=${state.height}`;
     const response = await fetch(url, {
       headers: {
+        method: 'GET',
         'Content-Type': 'application/json',
-        Accept: 'application/json',
       },
     });
     return await response.json();
-  };
-
-  const resizeImage = (e: React.MouseEvent<HTMLLIElement>) => {
-    e.preventDefault();
-    resizeImageAPI().then(response => {
-      console.log(response);
-    });
   };
 
   const thumbnailsShow = (): void => {
@@ -52,6 +45,35 @@ function App() {
   };
 
   useEffect(thumbnailsShow, []);
+
+  const [filename, setFilename] = useState('');
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  const handleFilenameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilename(e.target.value);
+  };
+
+  const handleWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setWidth(Number(e.target.value));
+  };
+
+  const handleHeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHeight(Number(e.target.value));
+  };
+
+  const resizeImage = (e: React.MouseEvent<HTMLLIElement>) => {
+    e.preventDefault();
+    formAction({
+      ...state,
+      fileName: filename,
+      width: width,
+      height: height,
+    });
+    resizeImageAPI().then(response => {
+      console.log(response);
+    });
+  };
 
   return (
     <div className="App">
@@ -86,6 +108,18 @@ function App() {
             </PhotoView>
           ))}
         </PhotoProvider>
+        <div>
+          <label>Filename:</label>
+          <input type="text" value={filename} onChange={handleFilenameChange} />
+        </div>
+        <div>
+          <label>Width:</label>
+          <input type="number" value={width} onChange={handleWidthChange} />
+        </div>
+        <div>
+          <label>Height:</label>
+          <input type="number" value={height} onChange={handleHeightChange} />
+        </div>
       </header>
     </div>
   );
