@@ -2,7 +2,6 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {useState, useEffect} from 'react';
-import {Button, Menu, MenuItem} from '@material-ui/core';
 import {PhotoProvider, PhotoView} from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
 
@@ -28,7 +27,7 @@ function App() {
   };
 
   const resizeImageAPI = async () => {
-    const url = `http://localhost:3002/api/ImageProcessing?filename=${state.fileName}&width=${state.width}&height=${state.height}`;
+    const url = `http://localhost:3002/api/ImageProcessing?filename=${state.fileName || filename}&width=${state.width}&height=${state.height}`;
     const response = await fetch(url, {
       headers: {
         method: 'GET',
@@ -75,6 +74,19 @@ function App() {
     });
   };
 
+  const resizeImageParallel = (e: React.MouseEvent<HTMLLIElement>) => {
+    e.preventDefault();
+    formAction({
+      ...state,
+      fileName: filename,
+      width: width,
+      height: height,
+    });
+    resizeImageAPI().then(response => {
+      console.log(response);
+    });
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -90,14 +102,11 @@ function App() {
         >
           Learn React
         </a>
-        <Menu open>
-          <MenuItem
-            onClick={(e: React.MouseEvent<HTMLLIElement>) => resizeImage(e)}
-          >
-            Resize Image
-          </MenuItem>
-          <MenuItem onClick={thumbnailsShow}>Show Thumbnails</MenuItem>
-        </Menu>
+        <ul>
+          <li onClick={resizeImage}>Resize image</li>
+          <li onClick={resizeImageParallel}>Resize Image Parallel</li>
+          <li onClick={thumbnailsShow}>Show Thumbnails</li>
+        </ul>
         {thumbnails.map((thumbnail: string, index: number) => (
           <img key={index} src={thumbnail} alt={`Thumbnail ${index}`} />
         ))}
