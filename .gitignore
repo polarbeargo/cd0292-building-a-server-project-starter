@@ -11118,3 +11118,7 @@ node_modules/@types/cors/README.md
 node_modules/@types/cors/package.json
 node_modules/@types/cors/LICENSE
 node_modules/@types/cors/index.d.ts
+node_modules
+src/.DS_Store
+src/routes/.DS_Store
+src/tests/.DS_Store
