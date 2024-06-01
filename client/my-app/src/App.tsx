@@ -27,7 +27,9 @@ function App() {
   };
 
   const resizeImageAPI = async () => {
-    const url = `http://localhost:3002/api/ImageProcessing?filename=${state.fileName || filename}&width=${state.width}&height=${state.height}`;
+    const url = `http://localhost:3002/api/ImageProcessing?filename=${
+      state.fileName || filename
+    }&width=${state.width}&height=${state.height}`;
     const response = await fetch(url, {
       headers: {
         method: 'GET',
