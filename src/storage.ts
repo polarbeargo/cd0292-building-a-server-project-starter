@@ -8,7 +8,7 @@ import {CheckFile} from './utilities';
 interface ImageQuery {
   width?: string;
   height?: string;
-  fileName?: string;
+  filename?: string;
 }
 
 export default class Storage {
@@ -31,17 +31,18 @@ export default class Storage {
   static async createImageThumbnail(
     params: ImageQuery
   ): Promise<null | string> {
-    if (!params.width || !params.height || !params.fileName) {
+    console.log(params.width, params.height, params.filename);
+    if (!params.width || !params.height || !params.filename) {
       return null;
     }
 
     const imagePath = path.resolve(
       Storage.imageAbsPath,
-      `${params.fileName}.jpg`
+      `${params.filename}.jpg`
     );
     const thumbnailPath = path.resolve(
       Storage.imageThumbnailPath,
-      `${params.fileName}_${params.width}x${params.height}.jpg`
+      `${params.filename}_${params.width}x${params.height}.jpg`
     );
 
     console.log('Creating thumbnail');
@@ -54,7 +55,7 @@ export default class Storage {
   }
 
   static async isValidated(params: ImageQuery): Promise<null | string> {
-    if (!params.width || !params.height || !params.fileName) {
+    if (!params.width || !params.height || !params.filename) {
       return 'params is invalid';
     }
 
@@ -78,7 +79,7 @@ export default class Storage {
     return null;
   }
   static async getPath(params: ImageQuery): Promise<null | string> {
-    if (!params.fileName) {
+    if (!params.filename) {
       return null;
     }
 
@@ -86,9 +87,9 @@ export default class Storage {
       params.width && params.height
         ? path.resolve(
             Storage.imageThumbnailPath,
-            `${params.fileName}_${params.width}x${params.height}.jpg`
+            `${params.filename}_${params.width}x${params.height}.jpg`
           )
-        : path.resolve(Storage.imageAbsPath, `${params.fileName}.jpg`);
+        : path.resolve(Storage.imageAbsPath, `${params.filename}.jpg`);
 
     try {
       await checkFile(params);
@@ -109,7 +110,7 @@ export default class Storage {
   }
 
   static async isThumbnailPath(params: ImageQuery): Promise<boolean> {
-    if (!params.width || !params.height || !params.fileName) {
+    if (!params.width || !params.height || !params.filename) {
       return false;
     }
 
