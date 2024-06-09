@@ -10,23 +10,19 @@ ImageProcessing.get(
     request: express.Request,
     response: express.Response
   ): Promise<void> => {
-    // print hi
-    console.log('hi');
     const validationMessage: null | string = await Storage.isValidated(
       request.query
     );
 
-    console.log('hi3');
     if (!validationMessage) {
       response.send(validationMessage);
       return;
     }
-    console.log('hi2');
+
     let error: null | string = '';
 
     if (!(await checkFile(request.query))) {
       error = await Storage.createImageThumbnail(request.query);
-      console.log('check');
     }
 
     if (error) {

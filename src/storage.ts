@@ -19,12 +19,9 @@ export default class Storage {
     req: Request,
     res: Response
   ): Promise<void> {
-    console.log('Reading thumbnail path');
     const imag = await fs.readdir(Storage.imageThumbnailPath);
-    console.log('Reading thumbnail path2');
     const thumbnails = imag.map(d => {
-      console.log(d);
-      return `http://localhost:3002/${d}`;
+      return `http://localhost:3002${Storage.imageThumbnailPath}/${d}`;
     });
     res.status(200).send({
       thumbnails,
