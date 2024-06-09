@@ -25,7 +25,7 @@ describe('Resize Image', (): void => {
     const err: null | string = await Storage.createImageThumbnail({
       width: '468',
       height: '256',
-      fileName: 'icelandwaterfall',
+      filename: 'icelandwaterfall',
     });
     expect(err).to.be.null;
   });
