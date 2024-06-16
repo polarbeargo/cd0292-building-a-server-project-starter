@@ -12,20 +12,27 @@ interface ImageQuery {
 }
 
 export default class Storage {
-  static imageThumbnailPath = path.resolve(__dirname, '../images/thumbnails');
-  static imageAbsPath = path.resolve(__dirname, '../images');
+  static imageThumbnailPath = path.join('images', 'thumbnails');
+  static imageAbsPath = 'images';
 
   static async readThumbnailAbsPath(
     req: Request,
     res: Response
   ): Promise<void> {
-    const imag = await fs.readdir(Storage.imageThumbnailPath);
-    const thumbnails = imag.map(d => {
-      return `http://localhost:3002${Storage.imageThumbnailPath}/${d}`;
-    });
-    res.status(200).send({
-      thumbnails,
-    });
+    try {
+      const imag = await fs.readdir(Storage.imageThumbnailPath);
+      const thumbnails = imag.map(d => {
+        console.log(d);
+        return `http://localhost:3002/${Storage.imageThumbnailPath}/${d}`;
+      });
+      res.status(200).send({
+        thumbnails,
+      });
+    } catch (error) {
+      res.status(500).send({
+        error: 'Failed to read thumbnails',
+      });
+    }
   }
 
   static async createImageThumbnail(

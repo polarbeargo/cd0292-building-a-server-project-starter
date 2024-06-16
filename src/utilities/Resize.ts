@@ -6,13 +6,12 @@ import sharp from 'sharp';
 import async from 'async';
 import assert from 'assert';
 import {exec, execSync} from 'child_process';
-import path from 'path';
 
 const width = 720;
 const height = 480;
 const fixtures = {
-  inputJpg: '../../images/fjord.jpg',
-  outputJpg: '../../images/thumbnails/fjord_720x480.jpg',
+  inputJpg: 'images/fjord.jpg',
+  outputJpg: 'images/thumbnails/fjord_720x480.jpg',
 };
 
 // Spawn one thread per physical CPU core
@@ -50,7 +49,7 @@ const resizeImage = async (params: ResizeParams): Promise<null | string> => {
   }
 };
 
-const resizeImageParallel = async.mapSeries(
+export const resizeImageParallel = async.mapSeries(
   [1, 1, 2, 4, 8, 16, 32, 64],
   async (parallelism, next) => {
     const start = new Date().getTime();
@@ -96,4 +95,3 @@ const resizeImageParallel = async.mapSeries(
 );
 
 export default resizeImage;
-export {resizeImageParallel};
