@@ -4,8 +4,10 @@ import './App.css';
 import {useState, useEffect} from 'react';
 import {PhotoProvider, PhotoView} from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
+import {useCallback} from 'react';
 
 function App() {
+
   const [thumbnails, setThumbnails] = useState([]);
   const [state, formAction] = useState({
     width: 0,
@@ -13,17 +15,23 @@ function App() {
     fileName: '',
   });
 
-  const [itemActivity, setItemActivity] = useState('ImageThumbnailPath');
-
   const fetchThumb = async () => {
     const url = 'http://localhost:3002/api/ImageThumbnailPath';
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    });
-    return await response.json();
+    try {
+      const response = await fetch(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Failed to fetch thumbnails:', error);
+      return {thumbnails: []};
+    }
   };
 
   const resizeImageAPI = async () => {
@@ -39,13 +47,29 @@ function App() {
     return await response.json();
   };
 
-  const thumbnailsShow = (): void => {
+  const thumbnailsShow = useCallback((): void => {
     fetchThumb().then(response => {
       setThumbnails(response.thumbnails);
+      console.log(response);
     });
+  }, []);
+
+  const resizeImageParallelAPI = async () => {
+    const url = `http://localhost:3002/api/ImageProcessingParallel?filename=${
+      state.fileName || filename
+    }&width=${state.width}&height=${state.height}`;
+    const response = await fetch(url, {
+      headers: {
+        method: 'GET',
+        'Content-Type': 'application/json',
+      },
+    });
+    return await response.json();
   };
 
-  useEffect(thumbnailsShow, []);
+  useEffect(() => {
+    thumbnailsShow();
+  }, [thumbnailsShow]);
 
   const [filename, setFilename] = useState('');
   const [width, setWidth] = useState(0);
@@ -84,7 +108,8 @@ function App() {
       width: width,
       height: height,
     });
-    resizeImageAPI().then(response => {
+
+    resizeImageParallelAPI().then(response => {
       console.log(response);
     });
   };

@@ -20,15 +20,17 @@ export default class Storage {
     res: Response
   ): Promise<void> {
     try {
+      console.log('Reading thumbnails from:', Storage.imageThumbnailPath);
       const imag = await fs.readdir(Storage.imageThumbnailPath);
       const thumbnails = imag.map(d => {
-        console.log(d);
+        console.log('Found thumbnail:', d);
         return `http://localhost:3002/${Storage.imageThumbnailPath}/${d}`;
       });
       res.status(200).send({
         thumbnails,
       });
     } catch (error) {
+      console.error('Error reading thumbnails:', error);
       res.status(500).send({
         error: 'Failed to read thumbnails',
       });
