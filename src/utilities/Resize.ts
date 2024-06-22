@@ -94,4 +94,35 @@ export const resizeImageParallel = async.mapSeries(
   }
 );
 
+interface ParallelResizeOptions {
+  tasks: ResizeParams[];
+  concurrency: number;
+}
+
+export const resizeImagesInParallel = async ({
+  tasks,
+  concurrency,
+}: ParallelResizeOptions): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    async.eachLimit(
+      tasks,
+      concurrency,
+      async task => {
+        try {
+          await resizeImage(task);
+        } catch (error) {
+          reject(error);
+        }
+      },
+      error => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      }
+    );
+  });
+};
+
 export default resizeImage;
