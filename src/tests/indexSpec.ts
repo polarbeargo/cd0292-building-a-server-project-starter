@@ -59,6 +59,17 @@ describe('Get ImageThumbnailPath API', () => {
   });
 });
 
+describe('POST /ImageProcessingParallel', () => {
+  it('should resize images and return 200', async () => {
+    const response = await superTest(app).get(
+      '/api/ImageProcessingParallel?filename=icelandwaterfall&width=500&height=300'
+    );
+
+    expect(response.status).to.equal(200);
+    expect(response.text).to.equal('Images resized successfully');
+  });
+});
+
 afterAll(async () => {
   const resizedImagePath: string = path.resolve(
     Storage.imageThumbnailPath,
