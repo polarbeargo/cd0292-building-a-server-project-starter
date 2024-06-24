@@ -10,7 +10,35 @@ Usually, you would get some starter code to build from, but with this project, i
 
 You can use your own images or use the ones provided in this repo: [images](images)
 
-### Requirements
+## Project Features
+
+- resizeImage: This function resizes an image to a specific width and height. The function should return a promise that resolves to a buffer of the resized image.
+
+  - Can operate from React Client.
+
+- resizeImageParallel: This function resizes an image to a specific width and height in parallel. The function should return a promise that resolves to a buffer of the resized image.
+
+  - Launching as server start will return time taken to resize a image in parallel.
+
+- resizeImagesInParallel: This function resizes an array of images to a specific width and height in parallel. The function should return a promise that resolves to an array of buffers of the resized images.
+
+  - Can operate from React Client.
+
+- Show Thumbnails: This function display thumbnails of images in a file system.
+
+  - Can operate from React Client.
+
+## Software Design Architecture
+
+- Storage class: By design this functor encapsulates behaviors and states within an object when we need to pass behaviors or characters as a parameter or when we want to maintain state between function calls to provide a clean interface to interact with the object. This class performs operations on images in a file system such as resizing images and getting thumbnails of images in a file system.
+
+... To be continued
+
+## Docker deployment
+
+... To be continued
+
+## Requirements
 
 - Node v16.16.0
 
@@ -53,6 +81,11 @@ npm run start
 ```bash
 npm run test
 ```
+
+## Operate leak.sh
+
+... To be continued
+
 ## License
 
 [License](LICENSE.txt)
