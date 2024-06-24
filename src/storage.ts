@@ -24,7 +24,7 @@ export default class Storage {
       const imag = await fs.readdir(Storage.imageThumbnailPath);
       const thumbnails = imag.map(d => {
         console.log('Found thumbnail:', d);
-        return `http://localhost:3002/${Storage.imageThumbnailPath}/${d}`;
+        return `http://localhost:3002/api/ImageThumbnailPath/${Storage.imageThumbnailPath}/${d}`;
       });
       res.status(200).send({
         thumbnails,
