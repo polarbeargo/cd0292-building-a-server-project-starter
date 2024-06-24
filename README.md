@@ -18,7 +18,7 @@ You can use your own images or use the ones provided in this repo: [images](imag
 
 - resizeImageParallel: This function resizes an image to a specific width and height in parallel. The function should return a promise that resolves to a buffer of the resized image.
 
-  - Launching as server start will return time taken to resize a image in parallel.
+  - Launching as the server starts will return the time to resize an image in parallel.
 
 - resizeImagesInParallel: This function resizes an array of images to a specific width and height in parallel. The function should return a promise that resolves to an array of buffers of the resized images.
 
@@ -85,6 +85,11 @@ npm run test
 ## Operate leak.sh
 
 ... To be continued
+
+## Future Improvements
+
+- Utilize the `worker_threads` module to leverage the power of parallel processing for advanced computational tasks. Dynamically spawn threads based on the number of physical CPU cores available on the machine to efficiently resize all images in parallel within a given file system in one button click.
+
 
 ## License
 
