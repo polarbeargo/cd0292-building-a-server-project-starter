@@ -73,6 +73,7 @@
     "styled-components": "^6.1.8",
     "undici-types": "^5.26.5",
     "v8-compile-cache-lib": "^3.0.1",
+    "worker-thread": "^1.1.0",
     "yn": "^3.1.1"
   },
   "directories": {
