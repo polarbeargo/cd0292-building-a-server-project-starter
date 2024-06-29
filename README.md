@@ -34,10 +34,6 @@ You can use your own images or use the ones provided in this repo: [images](imag
 
 ... To be continued
 
-## Docker deployment
-
-... To be continued
-
 ## Requirements
 
 - Node v16.16.0
@@ -86,10 +82,26 @@ npm run test
 
 ... To be continued
 
+## Docker deployment
+
+Server and client can be deployed using Docker. The following steps are required to deploy the server and client using Docker.
+
+- cd into the project directory
+
+```
+ ./docker_run.sh
+```
+
+- cd into the client directory
+
+```
+cd client/my-app
+./client_docker_run.sh
+```
+
 ## Future Improvements
 
 - Utilize the `worker_threads` module to leverage the power of parallel processing for advanced computational tasks. Dynamically spawn threads based on the number of physical CPU cores available on the machine to efficiently resize all images in parallel within a given file system in one button click.
-
 
 ## License
 
