@@ -38,25 +38,13 @@ You can use your own images or use the ones provided in this repo: [images](imag
 
 - Node v16.16.0
 
-### Installation
-
-```bash
-npm run init
-```
-
-### Liniting
-
-```bash
-npm run int
-npm run lint
-```
-
 ### Formatting
 
 ```bash
 npx prettier --write .
 ```
 
+## Local Installation
 ### Start the server
 
 ```bash
