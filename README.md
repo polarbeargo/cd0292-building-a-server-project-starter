@@ -45,6 +45,7 @@ npx prettier --write .
 ```
 
 ## Local Installation
+
 ### Start the server
 
 ```bash
@@ -90,6 +91,9 @@ cd client/my-app
 ## Future Improvements
 
 - Utilize the `worker_threads` module to leverage the power of parallel processing for advanced computational tasks. Dynamically spawn threads based on the number of physical CPU cores available on the machine to efficiently resize all images in parallel within a given file system in one button click.
+
+- Leverage on `TensorFlow.js` its ability to take advantage of the underlying hardware's parallel processing capabilities. It uses WebGL, which is a JavaScript API for rendering graphics on the GPU, to perform computations in parallel. This allows TensorFlow.js to execute operations much faster compared to traditional CPU-based computations.
+By utilizing parallel processing, TensorFlow.js can handle complex computational tasks more efficiently to process multiple inputs simultaneously, improving performance. It can distribute the computations across multiple cores or GPUs
 
 ## License
 
