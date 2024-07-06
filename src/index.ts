@@ -19,6 +19,7 @@ app.use(ErrorHandle);
 
 // Routes
 app.use('/', routes);
+app.use('/images/thumbnails', express.static('images/thumbnails'));
 
 // Health Check
 app.get('/health', (req, res) => {
